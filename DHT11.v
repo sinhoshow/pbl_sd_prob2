@@ -143,7 +143,7 @@ TRIS TRIS_DATA(
 					   DHT_OUT <= 1'b1;
 						WAIT_REG <= 1'b1;
 						error_REG <= 1'b0;
-						if (COUNTER < 360000)							// -- b111001111110111100000 --100.000.000/2 = 50.000.000 -> 1/50.000.000 = 0,00002ms --> 18ms/0,00002 = 900000 ciclos)
+						if (COUNTER < 900000)							// -- b111001111110111100000 --100.000.000/2 = 50.000.000 -> 1/50.000.000 = 0,00002ms --> 18ms/0,00002 = 900000 ciclos)
 						begin
 							COUNTER <= COUNTER +1'b1;
 						end else begin
@@ -156,7 +156,7 @@ TRIS TRIS_DATA(
 					 begin
 					   DHT_OUT <= 1'b0;	
 						WAIT_REG <= 1'b1;
-						if (COUNTER < 360000)							// --b111001111110111100000 -- 100.000.000/2 = 50.000.000 -> 1/50.000.000 = 0,00000002s --> 18ms/0,00002 = 900000 ciclos)
+						if (COUNTER < 900000)							// --b111001111110111100000 -- 100.000.000/2 = 50.000.000 -> 1/50.000.000 = 0,00000002s --> 18ms/0,00002 = 900000 ciclos)
 						begin
 							COUNTER <= COUNTER +1'b1;
 						end else begin
@@ -167,7 +167,7 @@ TRIS TRIS_DATA(
 				S2:
 					begin					   
 						DHT_OUT <= 1'b1;			//Leva para 1 aguarda 20 uS (resposta do DHT ocorre entre 20 e 40 uS)						
-						if (COUNTER < 400)
+						if (COUNTER < 1000)
 						begin
 						   COUNTER <= COUNTER +1'b1;
 						end else begin						
@@ -179,7 +179,7 @@ TRIS TRIS_DATA(
 				S3:
 					begin	 
                //   DIR <= 1'b0;					
-						if (COUNTER < 1200 && DHT_IN == 1'b1 )							// 60 (88) uS / 0,02uS = 2000 CICLOS DE 50MHZ
+						if (COUNTER < 3000 && DHT_IN == 1'b1 )							// 60 (88) uS / 0,02uS = 2000 CICLOS DE 50MHZ
 						begin		                     						
 						 	COUNTER <= COUNTER +1'b1;
 							STATE <= S3;
@@ -199,7 +199,7 @@ TRIS TRIS_DATA(
 				S4:
 					begin
 					  //DETECTA PULSO DE SINCRONISMO - P1
-						if ( DHT_IN == 1'b0  && COUNTER < 1760)												// 0,00002 = 0,02 uS -> 80uS/0,02uS = 4000 ciclos de 50MHz -> 25'b0000000000000111110100000
+						if ( DHT_IN == 1'b0  && COUNTER < 4400)												// 0,00002 = 0,02 uS -> 80uS/0,02uS = 10000 ciclos de 50MHz -> 25'b0000000000000111110100000
 						begin
 						   COUNTER <= COUNTER +1'b1;
 							STATE <= S4;
@@ -219,7 +219,7 @@ TRIS TRIS_DATA(
 				S5:
 					begin
 					  //DETECTA PULSO DE SINCRONISMO - P2
-						if ( DHT_IN == 1'b1 && COUNTER < 1760)												// 0,00002 = 0,02 uS -> 80uS/0,02uS = 4000 ciclos de 50MHz -> 25'b0000000000000111110100000
+						if ( DHT_IN == 1'b1 && COUNTER < 4400)												// 0,00002 = 0,02 uS -> 80uS/0,02uS = 10000 ciclos de 50MHz -> 25'b0000000000000111110100000
 						begin
 						   COUNTER <= COUNTER +1'b1;
 							STATE <= S5;
@@ -257,7 +257,7 @@ TRIS TRIS_DATA(
 								COUNTER <= 26'b00000000000000000000000001;
 								STATE <= S8;								
 						end else begin
-						   if ( COUNTER < 640000)  // -- 60uS - 3000 ciclos - VERIFICA SE ESTOUROU TEMPO PARA IR A ZERO E INICIAR TRANSMISSAO DE DADOS
+						   if ( COUNTER < 16000000)  // -- 60uS - 3000 ciclos - VERIFICA SE ESTOUROU TEMPO PARA IR A ZERO E INICIAR TRANSMISSAO DE DADOS
 							begin								
 								COUNTER <= COUNTER +1'b1;
 								STATE <= S7;	
@@ -274,7 +274,7 @@ TRIS TRIS_DATA(
 						if (  DHT_IN == 1'b0 ) /// 50MHz = 0,02 uS -> 60uS = 2500 ciclos
 						begin
 									
-									if ( COUNTER > 1000) 
+									if ( COUNTER > 2500) 
 									begin
 									   INTDATA[index] <= 1'b1;
 										DEBUG_REG <= 1'b1;
@@ -300,7 +300,7 @@ TRIS TRIS_DATA(
 						end else begin
 									COUNTER <= COUNTER + 1'b1;
 									
-									if (COUNTER > 640000) //Caso mais de 32mS de espera, aborta
+									if (COUNTER > 16000000) //Caso mais de 32mS de espera, aborta
 									begin
 									   error_REG <= 1'b1;
 										STATE <= STOP;
@@ -326,7 +326,7 @@ TRIS TRIS_DATA(
 							error_REG <= 1'b0;							
 							index <= 6'b000000;	
 						end else begin
-						  if ( COUNTER < 640000 )   //Se error_REG, mantem estrutura bloqueada por 3,2 ms atï¿½ DHT finalizar e sinaliza erro
+						  if ( COUNTER < 16000000 )   //Se error_REG, mantem estrutura bloqueada por 3,2 ms atï¿½ DHT finalizar e sinaliza erro
 						  begin
 						      INTDATA <= 40'b0000000000000000000000000000000000000000;
 								COUNTER <= COUNTER + 1'b1;

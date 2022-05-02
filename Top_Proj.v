@@ -28,11 +28,11 @@ module Top_Proj(
 	PMOD2_P1,     //DHT
 	PMOD2_P2,		//DHT ERROR
 	PMOD2_P3,		//Debug
-	CLK20MHZ		//Clock Principal
+	CLK50MHZ		//Clock Principal
 	);
 
 	//Entradas
-	input CLK20MHZ;
+	input CLK50MHZ;
 	
 	//Saidas
 	output PMOD1_P7,PMOD1_P8,PMOD1_P9, PMOD1_P10, PMOD2_P2, GPIO_LED1, GPIO_LED2, PMOD2_P3;      //Saida PMOD	
@@ -40,11 +40,11 @@ module Top_Proj(
 
 
 	//Wires do PLL
-	//wire CLK20MHZ, CLK20MHZ, BUFF25MHZ, BUFF8MHZ, CLK2M5HZ, PLLRST;
+	//wire CLK50MHZ, CLK50MHZ, BUFF25MHZ, BUFF8MHZ, CLK6M25HZ, PLLRST;
 	//assign PLLRST = 0;
 	
 	//Wires do Divisor
-	wire CLK2M5HZ, CLK19k5HZ, CLK1_19HZ;
+	wire CLK6M25HZ, CLK48k9HZ, CLK2_98HZ;
 	
 	//Wires da 74HC595
 	wire RST_74HC, EN_74HC595, SCLK_74HC, MOSI_74HC, CS_74HC, WAIT_74HC;
@@ -116,17 +116,17 @@ module Top_Proj(
 	//assign PMOD2_P1 = DHT_DATA;
 	
 	//PLL Embarcado
-	//PLL_100_25_8_3M125Hz PLL01 (CLK20MHZ, CLK20MHZ, BUFF25MHZ, BUFF8MHZ, CLK2M5HZ, PLLRST);
+	//PLL_100_25_8_3M125Hz PLL01 (CLK50MHZ, CLK50MHZ, BUFF25MHZ, BUFF8MHZ, CLK6M25HZ, PLLRST);
 	
 	//Multiplexador
-	//mux2x1 mux1 (BUFF8MHZ, CLK2M5HZ, GPIO_DIP1, PMOD1_P1);
+	//mux2x1 mux1 (BUFF8MHZ, CLK6M25HZ, GPIO_DIP1, PMOD1_P1);
 
 	//Divisor de clock
-	clockDiv clkdv01 (CLK20MHZ, CLK2M5HZ, CLK19k5HZ, CLK1_19HZ);	
+	clockDiv clkdv01 (CLK50MHZ, CLK6M25HZ, CLK48k9HZ, CLK2_98HZ);	
 	
 	//Modulo 74HC595
 	SPI_Out CI74HC595(	
-		.CLK(CLK2M5HZ),
+		.CLK(CLK6M25HZ),
 		.EN(EN_74HC595),
 		.DATA(DATA_BUS),
 		.RST(RST_74HC),
@@ -139,7 +139,7 @@ module Top_Proj(
 	
 	//Conversor 7Seg
   C7SEG DISPLAY1(
-		.CLK(CLK20MHZ),
+		.CLK(CLK50MHZ),
 		.EN(EN_CD1),
 		.RST(RST_CD1),
 		.DATA_IN(DATA_IN_CD1),
@@ -148,7 +148,7 @@ module Top_Proj(
 		 );	
 
   C7SEG DISPLAY2(
-		.CLK(CLK20MHZ),
+		.CLK(CLK50MHZ),
 		.EN(EN_CD2),
 		.RST(RST_CD2),
 		.DATA_IN(DATA_IN_CD2),
@@ -157,7 +157,7 @@ module Top_Proj(
 		 );	
 		 
   DHT11 DHT11(
-		 .CLK(CLK20MHZ),  //100 MHz
+		 .CLK(CLK50MHZ),  //100 MHz
 		 .EN(EN_DHT11),
 		 .RST(RST_DHT11),
 		 .DHT_DATA(PMOD2_P1),
@@ -182,7 +182,7 @@ module Top_Proj(
 	
 	parameter START0=0,START1=1, START2=2, START3=3;
 	
-	always @(posedge CLK20MHZ)
+	always @(posedge CLK50MHZ)
 	begin: FSMSTART	
 	  begin
 			case (FSMSTARTSTATE)
@@ -268,7 +268,7 @@ module Top_Proj(
 	parameter SDHT1=1,SDHT2=2, SDHT3=3, SD=4, CD1=5, CD2=6, CD3=7, S0=8, S1=9, S2=10, S3=11, S4=12, S5=13, WAIT1=14, WAIT2=15;
 	
 	
-	always @(posedge CLK20MHZ)
+	always @(posedge CLK50MHZ)
 	begin: FSM
 	  if (STARTED == 1'b1)
 	  begin
@@ -428,7 +428,7 @@ module Top_Proj(
 							EN_74HC595_REG  <= 1'b0;
 							//STATE <= CD1;
 							
-							if (CLK1_19HZ == 1'b0 )
+							if (CLK2_98HZ == 1'b0 )
                      begin						
 								STATE <= WAIT1;
 							end 
@@ -437,14 +437,14 @@ module Top_Proj(
 				//Aguardar para proximo ciclo de aquisi��o de dados	
 				WAIT1:
 					begin
-						if (CLK1_19HZ == 1)						
+						if (CLK2_98HZ == 1)						
 						begin
 							STATE <= WAIT2;
 						end
 					end
 				WAIT2:
 					begin
-						if (CLK1_19HZ == 0)
+						if (CLK2_98HZ == 0)
 						begin
 							STATE <= SDHT1;
 						end	

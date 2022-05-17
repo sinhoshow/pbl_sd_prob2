@@ -30,11 +30,17 @@ module Tb_Proj;
 	
 
 	// Outputs
+	wire PMOD1_P7;
+	wire PMOD1_P8;
 	wire PMOD1_P9;
 	wire PMOD1_P10;	
 
 	// Instantiate the Unit Under Test (UUT)
 	Top_Proj uut (
+		.PMOD1_P7(PMOD1_P7),
+		.PMOD1_P8(PMOD1_P8),
+		.PMOD1_P9(PMOD1_P9),	
+		.PMOD1_P10(PMOD1_P10),		
 		.CLK100MHZ(CLK100MHZ)
 	);
 

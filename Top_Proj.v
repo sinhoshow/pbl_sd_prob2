@@ -1,30 +1,8 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    15:10:12 04/11/2017 
-// Design Name: 
-// Module Name:    Top_Proj 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
 module Top_Proj(
 	GPIO_LED1,		//Sinaliza��o START
 	GPIO_LED2,		//Sinaliza��o START
-	PMOD1_P7,     //SCLK
-	PMOD1_P8, 	  //MOSI
-	PMOD1_P9, 	  //CS1
-	PMOD1_P10,		//cs2
 	PMOD2_P1,     //DHT
 	PMOD2_P2,		//DHT ERROR
 	PMOD2_P3,		//Debug
@@ -35,7 +13,7 @@ module Top_Proj(
 	input CLK50MHZ;
 	
 	//Saidas
-	output PMOD1_P7,PMOD1_P8,PMOD1_P9, PMOD1_P10, PMOD2_P2, GPIO_LED1, GPIO_LED2, PMOD2_P3;      //Saida PMOD	
+	output PMOD2_P2, GPIO_LED1, GPIO_LED2, PMOD2_P3;      //Saida PMOD	
 	inout PMOD2_P1;
 
 
@@ -51,20 +29,10 @@ module Top_Proj(
 	wire [0:7] DATA_BUS;
 	reg  EN_74HC595_REG, RST_74HC_REG;
    reg [0:7] DATA_BUS_REG, DATA1_REG, DATA2_REG; //Registradores adotados para manipula��o de dados
-	reg CS_74HC_1, CS_74HC_2;
 	
 	//FSM START
 	reg  EN_74HC595_REG_START, RST_74HC_REG_START;
 	reg [0:7] DATA_BUS_REG_START;
-	
-	
-	//assign DATA_BUS = DATA_BUS_REG;	
-	assign PMOD1_P7 = SCLK_74HC;  //Conecta SCLK
-	assign PMOD1_P8 = MOSI_74HC;   //Conecta MOSI/DATA
-	assign PMOD1_P9 = CS_74HC_1;   //Conecta CS
-	assign PMOD1_P10 = CS_74HC_2;   //Conecta CS
-	
-	
 	
 	
 	//Multiplexa a saida entre FSM Start e FSM Principal
@@ -74,28 +42,10 @@ module Top_Proj(
 	assign EN_74HC595 = STARTED ? EN_74HC595_REG : EN_74HC595_REG_START;
 	assign DATA_BUS = STARTED ? DATA_BUS_REG : DATA_BUS_REG_START;
 	
-	//Wires do conversor para Display
-	wire EN_CD1, EN_CD2, RST_CD1, RST_CD2, WAIT_CD1, WAIT_CD2;
-	wire [0:7] DATA_IN_CD1, DATA_IN_CD2, DATA_OUT_CD1, DATA_OUT_CD2;
-	reg  [0:7] DATA_IN_CD1_REG, DATA_IN_CD2_REG;
-	reg  EN_CD1_REG, EN_CD2_REG, RST_CD1_REG, RST_CD2_REG;
-	
+
 	//FSM START
 	reg  EN_CD1_REG_START, EN_CD2_REG_START, RST_CD1_REG_START, RST_CD2_REG_START;
-	
-//	assign EN_CD1= EN_CD1_REG ;
-//	assign EN_CD2 = EN_CD2_REG ;
-//	assign RST_CD1 = RST_CD1_REG ;
-//	assign RST_CD2 = RST_CD2_REG ;
-	
-	//Multiplexa a saida entre FSM Start e FSM Principal
-	assign EN_CD1 = STARTED ? EN_CD1_REG : EN_CD1_REG_START;
-	assign EN_CD2 = STARTED ? EN_CD2_REG : EN_CD2_REG_START;	
-	assign RST_CD1 = STARTED ? RST_CD1_REG : RST_CD1_REG_START;
-	assign RST_CD2 = STARTED ? RST_CD2_REG : RST_CD2_REG_START;
-	
-	assign DATA_IN_CD1 = DATA_IN_CD1_REG ;
-	assign DATA_IN_CD2 = DATA_IN_CD2_REG ;
+
 	
    //Wires para DHT11
 	wire EN_DHT11, RST_DHT11, DHT_DATA, CRC_DHT, WAIT_DHT11, ERROR_DHT11;
@@ -124,38 +74,7 @@ module Top_Proj(
 	//Divisor de clock
 	clockDiv clkdv01 (CLK50MHZ, CLK6M25HZ, CLK48k9HZ, CLK2_98HZ);	
 	
-	//Modulo 74HC595
-	SPI_Out CI74HC595(	
-		.CLK(CLK6M25HZ),
-		.EN(EN_74HC595),
-		.DATA(DATA_BUS),
-		.RST(RST_74HC),
-		.SCLK(SCLK_74HC),
-		.MOSI(MOSI_74HC),
-		.CS(CS_74HC),
-		.WAIT(WAIT_74HC)
-		
-	); 
-	
-	//Conversor 7Seg
-  C7SEG DISPLAY1(
-		.CLK(CLK50MHZ),
-		.EN(EN_CD1),
-		.RST(RST_CD1),
-		.DATA_IN(DATA_IN_CD1),
-		.DATA_OUT(DATA_OUT_CD1),
-		.WAIT(WAIT_CD1)
-		 );	
 
-  C7SEG DISPLAY2(
-		.CLK(CLK50MHZ),
-		.EN(EN_CD2),
-		.RST(RST_CD2),
-		.DATA_IN(DATA_IN_CD2),
-		.DATA_OUT(DATA_OUT_CD2),
-		.WAIT(WAIT_CD2)
-		 );	
-		 
   DHT11 DHT11(
 		 .CLK(CLK50MHZ),  //100 MHz
 		 .EN(EN_DHT11),
@@ -195,14 +114,6 @@ module Top_Proj(
 					  EN_DHT11_REG_START <= 1'b1;
 					 RST_DHT11_REG_START <= 1'b1;
 			      
-					//RESET DO CONVERSOR BCD
-						//dig1
-					 EN_CD1_REG_START <= 1'b1;
-					 RST_CD1_REG_START <= 1'b1;
-						//dig2
-					 EN_CD2_REG_START <= 1'b1;
-					 RST_CD2_REG_START <= 1'b1;				
-					 
 						   //reset do SPI
 					 DATA_BUS_REG_START <= 0;
 					 RST_74HC_REG_START <= 1'b1;
@@ -219,15 +130,7 @@ module Top_Proj(
 					
 					EN_DHT11_REG_START <= 1'b0;
 					RST_DHT11_REG_START <= 1'b0;
-
-			      
-					//RESET DO CONVERSOR BCD
-						//dig1
-					 EN_CD1_REG_START <= 1'b0;
-					 RST_CD1_REG_START <= 1'b0;
-						//dig2
-					 EN_CD2_REG_START <= 1'b0;
-					 RST_CD2_REG_START <= 1'b0;				
+			
 					 
 						   //reset do SPI
 					 DATA_BUS_REG_START <= 0;
@@ -278,9 +181,7 @@ module Top_Proj(
 				  begin				
 		          LED2 <= 1'b1;		  
 					 EN_DHT11_REG <= 1'b1;
-					 RST_DHT11_REG <= 1'b1;
-					 
-					 
+					 RST_DHT11_REG <= 1'b1;	 
 					 STATE <= SDHT2;
 				   end
 					
@@ -303,137 +204,10 @@ module Top_Proj(
 						begin
 						   TEMPERATURE <= TEMP_INT;
 							EN_DHT11_REG <= 1'b0;
-							STATE <= SD;
+							STATE <= WAIT1;
 						end 					
 					end
-				
-				SD:		//SEPARA DIGITOS PARA O DISPLAY 7SEG				   
-					begin
-							DATA_IN_CD2_REG <= TEMPERATURE/(8'b00001010);					
-							DATA_IN_CD1_REG <= TEMPERATURE-((TEMPERATURE/8'b00001010)*8'b00001010);
-							STATE <= CD1;								
-
-													
-					end
-				
-				CD1:											//Reset do conversor BCD
-					begin
-					   LED2 <= 1'b1;
-						//dig1
-						EN_CD1_REG <= 1'b1;
-						RST_CD1_REG <= 1'b1;
-						//dig2
-						EN_CD2_REG <= 1'b1;
-						RST_CD2_REG <= 1'b1;
-						
-						STATE <= CD2;
-					end
-				CD2:										   //Aguarda start
-					begin
-					   LED2 <= 1'b0;
-						RST_CD1_REG <= 1'b0;
-						RST_CD2_REG <= 1'b0;
-						if (WAIT_CD1 == 1'b1 && WAIT_CD2 == 1'b1 )
-						begin
-							STATE <= CD3;
-						end
-					end
-				CD3:											//Recebe dado e devolve ao registrador
-					begin
-					   LED2 <= 1'b1;
-						if (WAIT_CD1 == 1'b0 && WAIT_CD2 == 1'b0)
-						begin
-							DATA1_REG <= DATA_OUT_CD1;
-							DATA2_REG <= DATA_OUT_CD2;
-							STATE <= S0;
-						end else begin
-							RST_CD1_REG <= 1'b0;	
-							RST_CD2_REG <= 1'b0;							
-							STATE <= CD3;												
-						end
-					end
-				
-				//Compartilha CS74HC -- Envia 1	
-				S0:
-					begin
-					   LED2 <= 1'b0;
-					   DATA_BUS_REG <= DATA1_REG;
-						RST_74HC_REG <= 1'b1;
-						EN_74HC595_REG  <= 1'b1;
-						CS_74HC_1 <= CS_74HC;
-						if ( WAIT_74HC == 1'b1)
-						begin						
-							STATE <= S1;
-						end
-					end							
-				
-				S1:
-					begin					
-					   LED2 <= 1'b1;
-						RST_74HC_REG <= 1'b0;
-						EN_74HC595_REG  <= 1'b1;
-						CS_74HC_1 <= CS_74HC;
-						STATE <= S2;						
-					end
-
-				S2:
-					begin
-					   LED2 <= 1'b0;
-					   CS_74HC_1 <= CS_74HC;
-						if ( WAIT_74HC == 1'b1)
-						begin
-							RST_74HC_REG <= 1'b0;
-							EN_74HC595_REG  <= 1'b1;
-							STATE <= S2;
-						end else begin
-							RST_74HC_REG <= 1'b0;
-							EN_74HC595_REG  <= 1'b0;
-							STATE <= S3;
-						end
-					end
-				//Compartilha CS74HC -- Envia 2	
-				S3:
-					begin
-					   LED2 <= 1'b1;
-					   DATA_BUS_REG <= DATA2_REG;
-						RST_74HC_REG <= 1'b1;
-						EN_74HC595_REG  <= 1'b1;
-						CS_74HC_2 <= CS_74HC;
-						if ( WAIT_74HC == 1'b1)
-						begin						
-							STATE <= S4;
-						end
-					end							
-				
-				S4:
-					begin		
-                  LED2 <= 1'b0;					
-						RST_74HC_REG <= 1'b0;
-						EN_74HC595_REG  <= 1'b1;
-						CS_74HC_2 <= CS_74HC;
-						STATE <= S5;						
-					end
-
-				S5:
-					begin
-					   LED2 <= 1'b1;
-						CS_74HC_2 <= CS_74HC;
-						if ( WAIT_74HC == 1'b1)
-						begin
-							RST_74HC_REG <= 1'b0;
-							EN_74HC595_REG  <= 1'b1;
-							STATE <= S5;
-						end else begin
-							RST_74HC_REG <= 1'b0;
-							EN_74HC595_REG  <= 1'b0;
-							//STATE <= CD1;
-							
-							if (CLK2_98HZ == 1'b0 )
-                     begin						
-								STATE <= WAIT1;
-							end 
-						end
-					end
+			
 				//Aguardar para proximo ciclo de aquisi��o de dados	
 				WAIT1:
 					begin
@@ -447,22 +221,9 @@ module Top_Proj(
 						if (CLK2_98HZ == 0)
 						begin
 							STATE <= SDHT1;
-						end	
-					end					
-									
-					
-
-				default: 
-					begin
-					  STATE <= SDHT1;
-					end				
-			endcase
- 	  end else begin
-		STATE <= SDHT1;
-	  
-	  end//if EN
-	end	
-	
+							
+					end								  
+	  end
 	
 endmodule
 

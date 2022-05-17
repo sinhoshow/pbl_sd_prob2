@@ -1,8 +1,25 @@
 `timescale 1ns / 1ps
-
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date:    16:09:32 07/03/2017 
+// Design Name: 
+// Module Name:    DHT11 
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
 //////////////////////////////////////////////////////////////////////////////////
 module DHT11(
-	 input CLK,  //50 MHz
+	 input CLK,  //100 MHz
     input EN,
     input RST,	 
     inout DHT_DATA,
@@ -91,7 +108,7 @@ TRIS TRIS_DATA(
 
 	 reg [3:0] STATE;
 	 
-	 //Definiçao de estados
+	 //Definiï¿½ï¿½o de estados
 	 parameter S0=1, S1=2, S2=3, S3=4, S4=5, S5=6, S6=7, S7=8, S8=9, S9=10, STOP=0, START=11;
 
  

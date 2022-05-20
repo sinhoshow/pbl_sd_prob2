@@ -25,16 +25,16 @@ Este arquivo é referente ao sensor de umidade e temperatura DHT11, com todas as
 - SDC1.sdc <br>
 Este arquivo é referente a configuração do clock
 - TRIS.v <br>
-Este arquivo é referente ao módulo TRIS que permite que a pinagem tenha 3 funcionalidades
+Este arquivo é referente ao módulo TRIS que permite que a pinagem tenha 3 funcionalidades.
 - BaudRateGenerator.v <br>
 Este arquivo é referente ao gerador de Baud Rate responsável pelo número de vezes que um sinal em um canal de comunicação muda seu estado, ou varia.
 - Top_Proj.v <br>
 - Uart8.v <br>
-
+Arquivo que faz a junção da recepção e transmissão de dados da FPGA, incluindo baud rate.
 - Uart8Transmitter.v <br>
-
+Arquivo referente a transmissão de dados da uart da FPGA com 8 bits seriais, um bit de inicio e um bit de parada.
 - UartStates.vh <br>
-
+Arquivo com estados das maquinas de estados da transmissão e recepção de dados.
 - clockDiv.v <br>
 
 Pasta: Codigo_c

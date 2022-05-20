@@ -7,9 +7,12 @@ Entradas:
 Sensores:
 - Temperatura e Umidade
 
-Eletronicos:
-- Raspibery Pi0
-- FPGA
+Recursos utilizados:
+O código  C foi desenvolvido para a Raspberry pi Zero,
+portanto é necessário ter a placa para execução do código. Na versão ARMv6 BCM2835, sistema operacional RASPBIAN.
+ 
+O código Verilog foi desenvolvido para FPGA Cyclone IV do kit de desenvolvimento mercurio IV device … , no programa Quartus versão 20.1.
+
 
 Objetivo:
 A Raspibery faz uma solicitação (em linguagem C)  para FPGA ,da qual a mesma se comunica com o sensor, mandando assim um sinal ao sensor.

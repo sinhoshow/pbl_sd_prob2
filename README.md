@@ -1,25 +1,24 @@
-# pbl_sd_prob2
+
+# Problema 02 - Interfaces de E/S
+
+Projeto de Sensor Digital em FPGA utilizando Comunicação Serial.
+
+O sistema utiliza a porta de comunicação serial (UART) de uma RaspberryPi para se comunicar com uma FPGA que é responsável por coletar dados de sensores conectados à própria.
+
+O código responsável pela interação da Raspberry com a FPGA foi escrito em C.
+
+O projeto da FPGA foi feito utilizando Verilog para descrever o circuito responsável pela leitura das requisições vindas da raspberry, solicitação dos dados aos sensores e resposta desses dados para a raspberry.
 
 
-Entradas:
-- Solicitação de dado
-
-Sensores:
-- Temperatura e Umidade
-
-Eletronicos:
-- Raspibery Pi0
-- FPGA
-
-Objetivo:
-A Raspibery faz uma solicitação (em linguagem C)  para FPGA ,da qual a mesma se comunica com o sensor, mandando assim um sinal ao sensor.
-Esse sinal é retornado para a Uart da FPGA com os dados do qual em seguida é enviado e exibido na tela do Raspiberry através da interface da Raspiberry.
-
-
-Essa aplicação permite gerar uma comunicação entre a UART e Raspibery e enviar os dados da temperatura e umidade.
-
-Testagem: 
-
-
-Sensor de Umidade e temperatura  DHT11
-![sensor-de-umidade-e-temperatura-dht11](https://user-images.githubusercontent.com/8845392/169423907-19a8ab51-d1b9-4970-ace5-84bf40c9abdc.jpg)
+## Recursos Utilizados
+- Kit de desenvolvimento Mercúrio IV
+- FPGA Cyclone IV
+- Raspberry Pi Zero
+- Sensor DHT11
+- Protoboard
+- Fios
+## Diagramas de arquitetura e fluxo
+- arquitetura
+![arquitetura](imgs/arquitetura.png)
+- fluxo
+![fluxo](imgs/fluxo.png)

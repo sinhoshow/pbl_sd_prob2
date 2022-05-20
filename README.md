@@ -19,3 +19,7 @@ Esse sinal é retornado para a Uart da FPGA com os dados do qual em seguida é e
 Essa aplicação permite gerar uma comunicação entre a UART e Raspibery e enviar os dados da temperatura e umidade.
 
 Testagem: 
+
+
+Sensor de Umidade e temperatura  DHT11
+![sensor-de-umidade-e-temperatura-dht11](https://user-images.githubusercontent.com/8845392/169423907-19a8ab51-d1b9-4970-ace5-84bf40c9abdc.jpg)

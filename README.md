@@ -27,6 +27,10 @@ O projeto da FPGA foi feito utilizando Verilog para descrever o circuito respons
 
 ![fluxo](imgs/fluxo.png)
 
+
+## Transferência de arquivo no circuito
+![transferenciadedados](https://user-images.githubusercontent.com/8845392/169427680-3a03d232-5cbf-4e7f-8bd8-7b05f11c88ad.jpeg)
+
 ## Instalação
 
 Clonar repositório

@@ -20,6 +20,9 @@ O projeto da FPGA foi feito utilizando Verilog para descrever o circuito respons
 
 ## Diagramas de arquitetura e fluxo
 - arquitetura
+
 ![arquitetura](imgs/arquitetura.png)
+
 - fluxo
+
 ![fluxo](imgs/fluxo.png)

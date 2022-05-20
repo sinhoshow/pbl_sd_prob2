@@ -18,6 +18,33 @@ O projeto da FPGA foi feito utilizando Verilog para descrever o circuito respons
 - Protoboard
 - Fios
 
+Pasta: FPGA
+
+- DHT11.v
+Este arquivo é referente ao sensor de umidade e temperatura DHT11, com todas as sunas funcionalidades como entrada e saída e sua máquina de estado
+- SDC1.sdc
+Este arquivo é referente a configuração do clock
+- TRIS.v
+Este arquivo é referente ao módulo TRIS que permite que a pinagem tenha 3 funcionalidades
+- BaudRateGenerator.v
+Este arquivo é referente ao gerador de Baud Rate responsável pelo número de vezes que um sinal em um canal de comunicação muda seu estado, ou varia.
+- Top_Proj.v
+- Uart8.v
+
+- Uart8Transmitter.v
+
+- UartStates.vh
+
+- clockDiv.v
+
+Pasta: Codigo_c
+
+- main.c
+Este arquivo interage com o usuário e é responsável por fazer as solicitações do usuário para os sensores de umidade e temperatura 
+
+Pasta: imgs
+
+
 ## Diagramas de arquitetura e fluxo
 - arquitetura
 

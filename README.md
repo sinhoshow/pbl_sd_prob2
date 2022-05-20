@@ -64,10 +64,6 @@ Pasta com imagens utilizadas no README.md.
 
 ![fluxo](imgs/fluxo.png)
 
-
-## Transferência de dados no circuito
-
-
 ## Instalação
 
 Clonar repositório
@@ -86,3 +82,6 @@ Após os arquivos serem lançados na fpga, rodar o comando make all no diretóri
 ```bash
   make all
 ```
+
+## Rodando o projeto
+{testes realizados}

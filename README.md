@@ -26,3 +26,22 @@ O projeto da FPGA foi feito utilizando Verilog para descrever o circuito respons
 - fluxo
 
 ![fluxo](imgs/fluxo.png)
+
+## Instalação
+
+Clonar repositório
+
+```bash
+  git clone https://github.com/sinhoshow/pbl_sd_prob2.git
+```
+O diretório "codigo_c" precisa estar na raspberry pi, para que possa ser feita a compilação e execução do arquivo main.c
+
+Já o diretório "fpga" possui os arquivos em verilog que precisarão ser lançados na FPGA.
+
+{demonstrar como lançar os arquivos .V para fpga}
+
+Após os arquivos serem lançados na fpga, rodar o comando make all no diretório "codigo_c" na raspberry.
+
+```bash
+  make all
+```

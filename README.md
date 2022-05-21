@@ -79,7 +79,6 @@ Já o diretório "fpga" possui os arquivos em verilog que precisarão ser lança
 
 Deve-se criar um projeto no Quartus e adicionar todos arquivos da pasta "fpga" ao projeto, em seguida insira o modelo do processador na função "device", depois descarregue na placa usando a função "Programmer". 
 
-{demonstrar como lançar os arquivos .V para fpga}
 
 Após os arquivos serem lançados na fpga, rodar o comando make all no diretório "codigo_c" na raspberry.
 

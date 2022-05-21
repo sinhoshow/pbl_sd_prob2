@@ -77,8 +77,7 @@ O diretório "codigo_c" precisa estar na raspberry pi, para que possa ser feita 
 
 Já o diretório "fpga" possui os arquivos em verilog que precisarão ser lançados na FPGA através do programa Quartus.
 
-Deve-se criar um projeto no Quartus e adicionar todos arquivos da pasta "fpga" ao projeto, em seguida programe o device do processador, depois descarregue na placa
-usando a função "Programmer" no Quartus. 
+Deve-se criar um projeto no Quartus e adicionar todos arquivos da pasta "fpga" ao projeto, em seguida insira o modelo do processador na função "device", depois descarregue na placa usando a função "Programmer". 
 
 {demonstrar como lançar os arquivos .V para fpga}
 

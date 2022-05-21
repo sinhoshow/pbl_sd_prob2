@@ -5,7 +5,7 @@ Projeto de Sensor Digital em FPGA utilizando Comunicação Serial.
 
 O sistema utiliza a porta de comunicação serial (UART) de uma RaspberryPi para se comunicar com uma FPGA que é responsável por coletar dados de sensores conectados à própria.
 
-O código responsável pela interação da Raspberry com a FPGA foi escrito em C.
+O código responsável pela interação da Raspberry com a FPGA foi escrito em linguagem C.
 
 O projeto da FPGA foi feito utilizando Verilog para descrever o circuito responsável pela leitura das requisições vindas da raspberry, solicitação dos dados aos sensores e resposta desses dados para a raspberry. Para carregar o circuito para a FPGA foi utilizado o Quartus v20.1.
 
@@ -23,7 +23,7 @@ O projeto da FPGA foi feito utilizando Verilog para descrever o circuito respons
 #### fpga
 
 - DHT11.v <br>
-Este arquivo é referente ao sensor de umidade e temperatura DHT11, com todas as sunas funcionalidades como entrada e saída e sua máquina de estado
+Este arquivo é referente ao sensor de umidade e temperatura DHT11, com todas as sunas funcionalidades como entrada e saída e sua máquina de estado.
 
 ![transferenciadedados](https://user-images.githubusercontent.com/8845392/169427680-3a03d232-5cbf-4e7f-8bd8-7b05f11c88ad.jpeg)
 
@@ -52,7 +52,7 @@ Esse arquivo faz a divisão do clock, usado na configuração do sensor.
 #### codigo_c
 
 - main.c <br>
-Este arquivo interage com o usuário e é responsável por fazer as solicitações para a fpga através da UART da raspberry dos dados dos sensores de umidade e temperatura.
+Este arquivo interage com o usuário sendo responsável por fazer as solicitações para a fpga através da UART da raspberry dos dados dos sensores de umidade e temperatura.
 
 #### imgs <br>
 Pasta com imagens utilizadas no README.md.

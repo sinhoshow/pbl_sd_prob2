@@ -34,19 +34,21 @@ Este arquivo é referente ao sensor de umidade e temperatura DHT11, com todas as
 - SDC1.sdc <br>
 Configuração do clock utilizado na FPGA.
 - TRIS.v <br>
-Módulo TRI state que permite que a pinagem tenha 3 funcionalidades. Faz com que o pino de dados do DHT11 funcione tanto para transmissão e solicitações de dados.
+Módulo TRI state que permite que a pinagem tenha 3 funcionalidades. Faz com que o pino de dados do DHT11 funcione tanto para transmissão e recepção de dados.
 - BaudRateGenerator.v <br>
 Gerador de Baud Rate responsável pelo número de vezes que um sinal em um canal de comunicação muda seu estado, ou varia.
 - Top_Proj.v <br>
-Arquivo principal do todo projeto, responsável pela integração entre o sensor e a UART da FPGA
+Arquivo principal de todo projeto, responsável pela integração entre o sensor e a UART da FPGA.
 - Uart8.v <br>
-Faz a junção da recepção e transmissão de dados da FPGA, incluindo baud rate.
+Faz a junção da recepção e transmissão de dados da uart da FPGA, incluindo baud rate.
 - Uart8Transmitter.v <br>
-Referente a transmissão de dados da uart da FPGA com 8 bits seriais, um bit de inicio e um bit de parada.
+Arquivo da transmissão de dados da uart da FPGA, capaz de enviar 8 bits de dados seriais, um bit de início, um bit de parada.
+- Uart8Receiver.v <br>
+Arquivo da recepção de dados da uart da FPGA, capaz de receber 8 bits de dados seriais, um bit de início, um bit de parada.
 - UartStates.vh <br>
 Estados das maquinas de estados da transmissão e recepção de dados.
 - clockDiv.v <br>
-
+Esse arquivo faz a divisão do clock, usado na configuração do sensor.
 #### codigo_c
 
 - main.c <br>

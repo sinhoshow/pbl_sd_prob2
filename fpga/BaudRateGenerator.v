@@ -1,72 +1,43 @@
 /*
- * Simple 8-bit UART realization.
- * Combine receiver, transmitter and baud rate generator.
- * Able to operate 8 bits of serial data, one start bit, one stop bit.
+ * Baud rate generator to divide {CLOCK_RATE} (internal board clock) into
+ * a rx/tx {BAUD_RATE} pair with rx oversamples by 16x.
  */
-module Uart8  #(
-    parameter CLOCK_RATE = 100000000, // board internal clock
+module BaudRateGenerator  #(
+    parameter CLOCK_RATE = 100000000, // board internal clock (def == 100MHz)
     parameter BAUD_RATE = 9600
 )(
-    input wire clk,
-
-    // rx interface
-    input wire rx,
-    //input wire rxEn,
-    //output wire [7:0] out,
-    //output wire rxDone,
-    output wire rxBusy,
-    output wire rxErr,
-
-    // tx interface
-    output wire tx,
-    //input wire txEn,
-    //input wire txStart,
-    //input wire [7:0] in,
-    output wire txDone,
-    output wire txBusy
+    input wire clk, // board clock
+    output reg rxClk, // baud rate for rx
+    output reg txClk // baud rate for tx
 );
-wire rxClk;
-wire txClk;
-wire txEn = 1;
-wire rxEn = 1;
+parameter MAX_RATE_RX = CLOCK_RATE / (2 * BAUD_RATE * 16); // 16x oversample
+parameter MAX_RATE_TX = CLOCK_RATE / (2 * BAUD_RATE);
+parameter RX_CNT_WIDTH = $clog2(MAX_RATE_RX);
+parameter TX_CNT_WIDTH = $clog2(MAX_RATE_TX);
 
-// parametro wire [7:0] in = 0 
-wire [7:0] out;
-wire rxDone;
-reg txStart = 0;
+reg [RX_CNT_WIDTH - 1:0] rxCounter = 0;
+reg [TX_CNT_WIDTH - 1:0] txCounter = 0;
 
-BaudRateGenerator #(
-    .CLOCK_RATE(CLOCK_RATE),
-    .BAUD_RATE(BAUD_RATE)
-) generatorInst (
-    .clk(clk),
-    .rxClk(rxClk),
-    .txClk(txClk)
-);
+initial begin
+    rxClk = 1'b0;
+    txClk = 1'b0;
+end
 
-Uart8Receiver rxInst (
-    .clk(rxClk),
-    .en(rxEn),
-    .in(rx),
-    .out(out),
-    .done(rxDone),
-    .busy(rxBusy),
-    .err(rxErr)
-);
+always @(posedge clk) begin
+    // rx clock
+    if (rxCounter == MAX_RATE_RX[RX_CNT_WIDTH-1:0]) begin
+        rxCounter <= 0;
+        rxClk <= ~rxClk;
+    end else begin
+        rxCounter <= rxCounter + 1'b1;
+    end
+    // tx clock
+    if (txCounter == MAX_RATE_TX[TX_CNT_WIDTH-1:0]) begin
+        txCounter <= 0;
+        txClk <= ~txClk;
+    end else begin
+        txCounter <= txCounter + 1'b1;
+    end
+end
 
-Uart8Transmitter txInst (
-    .clk(txClk),
-    .en(txEn),
-    .start(txStart),
-    .in(out),
-    .out(tx),
-    .done(txDone),
-    .busy(txBusy)
-);
-
-always @(posedge clk) 
-	begin 
-		txStart <= rxDone;
-	end
-	
 endmodule

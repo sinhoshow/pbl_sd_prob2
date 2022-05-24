@@ -88,3 +88,13 @@ Após os arquivos serem lançados na fpga, rodar o comando make all no diretóri
 
 ## Rodando o projeto
 {testes realizados}
+
+Sensor:
+
+![testeUm](https://user-images.githubusercontent.com/8845392/170023535-7c19bbe6-e298-4c5e-9264-aa6bc0309fcc.jpeg)
+![testeDois](https://user-images.githubusercontent.com/8845392/170023569-d57dba3d-4c72-4262-ac64-2a40955b73d8.jpeg)
+
+Logo abaixo temos a parte inteira do dado do sensor onde conta as linhas da matriz em binário, 24 graus.
+![parteInterna](https://user-images.githubusercontent.com/8845392/170023689-c6b7290a-cdf7-415d-9e01-903fa053c332.jpeg)
+abaixo temos a parte inteira da umidade que conta os binários pelas linhas da matriz, valor da umidade 39.
+
